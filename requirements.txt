@@ -1,0 +1,6 @@
+Flask==3.0.0
+Flask-SQLAlchemy
+pymysql
+Flask-Login
+Flask-Bcrypt
+python-dotenv

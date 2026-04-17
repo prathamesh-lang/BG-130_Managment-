@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ForgeCart | Create Account</title>
+    <title>ForgeCart | Login</title>
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -16,29 +16,24 @@
 
     <div class="container auth-wrapper">
         <div class="glass auth-container">
-            <h2>Initiate Access</h2>
-            <form action="login.html" method="GET">
-                <div class="form-group">
-                    <label>Full Name</label>
-                    <input type="text" id="name" class="form-control" placeholder="John Doe">
-                </div>
+            <h2>Welcome Back</h2>
+            {% if error %}
+            <div style="color: red; margin-bottom: 10px;">{{ error }}</div>
+            {% endif %}
+            <form action="/login.html" method="POST">
                 <div class="form-group">
                     <label>Email Address</label>
-                    <input type="text" id="email" class="form-control" placeholder="developer@backforge.com">
+                    <input type="email" name="email" id="email" class="form-control" placeholder="developer@backforge.com" required>
                 </div>
                 <div class="form-group">
                     <label>Password</label>
-                    <input type="text" id="password" class="form-control" placeholder="Create a secure password">
-                </div>
-                <div class="form-group">
-                    <label>Confirm Password</label>
-                    <input type="text" id="confirm_password" class="form-control" placeholder="Verify password">
+                    <input type="password" name="password" id="password" class="form-control" placeholder="••••••••" required>
                 </div>
                 <button type="submit" class="btn btn-block" style="margin-top: 15px;">
-                    <i class="fas fa-user-plus"></i> Initialize Account
+                    <i class="fas fa-sign-in-alt"></i> Access Account
                 </button>
             </form>
-            <p>Already registered? <a href="login.html">Login here</a></p>
+            <p>Don't have an account? <a href="register.html">Create one</a></p>
         </div>
     </div>
 
