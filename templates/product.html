@@ -15,8 +15,14 @@
         <div class="nav-links">
             <a href="orders.html" class="nav-link" style="margin-right: 15px;" title="Order History"><i class="fas fa-box-open"></i></a>
             <a href="cart.html" class="nav-link" style="margin-right: 15px;" title="View Cart"><i class="fas fa-shopping-cart"></i></a>
-            <a href="login.html" class="nav-link">Sign In</a>
-            <a href="register.html" class="btn">Sign Up</a>
+            {% if current_user.is_authenticated %}
+                <span class="nav-link" style="color: var(--primary);">{{ current_user.name }}</span>
+                <a href="/profile" class="nav-link">Profile</a>
+                <a href="/logout" class="nav-link">Logout</a>
+            {% else %}
+                <a href="login.html" class="nav-link">Sign In</a>
+                <a href="register.html" class="btn">Sign Up</a>
+            {% endif %}
         </div>
     </nav>
 

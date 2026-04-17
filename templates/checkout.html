@@ -15,8 +15,14 @@
         <div class="nav-links">
             <a href="orders.html" class="nav-link" style="margin-right: 15px;" title="Order History"><i class="fas fa-box-open"></i></a>
             <a href="cart.html" class="nav-link" style="margin-right: 15px;" title="View Cart"><i class="fas fa-shopping-cart"></i></a>
-            <a href="login.html" class="nav-link">Sign In</a>
-            <a href="register.html" class="btn">Sign Up</a>
+            {% if current_user.is_authenticated %}
+                <span class="nav-link" style="color: var(--primary);">{{ current_user.name }}</span>
+                <a href="/profile" class="nav-link">Profile</a>
+                <a href="/logout" class="nav-link">Logout</a>
+            {% else %}
+                <a href="login.html" class="nav-link">Sign In</a>
+                <a href="register.html" class="btn">Sign Up</a>
+            {% endif %}
         </div>
     </nav>
 
@@ -27,21 +33,21 @@
         <div class="cart-layout">
             <div class="glass" style="padding: 40px;">
                 <h3 style="margin-bottom: 25px; color: var(--text-main); font-family: 'Outfit', sans-serif;">Delivery Parameters</h3>
-                <form id="checkout-form">
+                <form id="checkout-form" action="/place_order" method="POST">
                     <div class="form-group">
                         <label>Target Identity (Full Name)</label>
-                        <input type="text" id="fullname" class="form-control" placeholder="John Doe">
+                        <input type="text" name="fullname" id="fullname" class="form-control" placeholder="John Doe" required value="{{ current_user.name }}">
                     </div>
                     <div class="form-group">
                         <label>Communication Node (Email)</label>
-                        <input type="text" id="email" class="form-control" placeholder="john@example.com">
+                        <input type="email" name="email" id="email" class="form-control" placeholder="john@example.com" required value="{{ current_user.email }}">
                     </div>
                     <div class="form-group">
                         <label>Physical Node (Address)</label>
-                        <textarea id="address" class="form-control" rows="4" placeholder="123 Main St, Appt 4B..."></textarea>
+                        <textarea name="address" id="address" class="form-control" rows="4" placeholder="123 Main St, Appt 4B..." required></textarea>
                     </div>
                     
-                    <button type="button" class="btn btn-block" style="padding: 16px; font-size: 1.1rem; margin-top: 30px;">
+                    <button type="submit" class="btn btn-block" style="padding: 16px; font-size: 1.1rem; margin-top: 30px;">
                         <i class="fas fa-lock"></i> Authorize & Compile Order
                     </button>
                 </form>
@@ -50,22 +56,20 @@
             <div class="glass cart-summary">
                 <h3 style="margin-bottom: 25px; font-family: 'Outfit', sans-serif;">Payload Summary</h3>
                 <div id="checkout-items-summary" style="margin-bottom: 25px; padding-bottom: 25px; border-bottom: 1px dashed var(--card-border);">
-                    <div class="flex justify-between items-center mb-2" style="font-size: 0.95rem;">
-                        <span class="text-muted"><i class="fas fa-layer-group" style="font-size: 0.8rem; margin-right: 5px; color: var(--primary);"></i> Hackathon Hoodie 2026 <span style="background: rgba(255,255,255,0.05); padding: 2px 6px; border-radius: 4px; font-size: 0.8rem; margin-left: 5px;">x1</span></span>
-                        <span>$59.99</span>
+                    {% for item in cart_items %}
+                    <div class="flex justify-between items-center mb-2" style="font-size: 0.95rem; display: flex; justify-content: space-between;">
+                        <span class="text-muted" style="color: var(--text-muted);"><i class="fas fa-layer-group" style="font-size: 0.8rem; margin-right: 5px; color: var(--primary);"></i> {{ item.product_name }} <span style="background: rgba(255,255,255,0.05); padding: 2px 6px; border-radius: 4px; font-size: 0.8rem; margin-left: 5px;">x{{ item.quantity }}</span></span>
+                        <span>${{ "%.2f"|format(item.product_price * item.quantity) }}</span>
                     </div>
-                    <div class="flex justify-between items-center mb-2" style="font-size: 0.95rem;">
-                        <span class="text-muted"><i class="fas fa-layer-group" style="font-size: 0.8rem; margin-right: 5px; color: var(--primary);"></i> Developer Sticker Pack <span style="background: rgba(255,255,255,0.05); padding: 2px 6px; border-radius: 4px; font-size: 0.8rem; margin-left: 5px;">x2</span></span>
-                        <span>$29.98</span>
-                    </div>
+                    {% endfor %}
                 </div>
-                <div class="flex justify-between items-center text-muted mb-2">
+                <div class="flex justify-between items-center text-muted mb-2" style="display: flex; justify-content: space-between; color: var(--text-muted);">
                     <span>Transmission Protocol</span>
                     <span style="color: var(--success); font-weight: 500;">Free / Instant</span>
                 </div>
                 <div class="summary-total" style="border-top: none; padding-top: 0; margin-top: 10px;">
                     <span>Total Resource</span>
-                    <span id="checkout-total" style="color: var(--primary);">$89.97</span>
+                    <span id="checkout-total" style="color: var(--primary);">${{ "%.2f"|format(subtotal) }}</span>
                 </div>
             </div>
         </div>

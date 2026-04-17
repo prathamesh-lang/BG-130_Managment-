@@ -15,8 +15,14 @@
         <div class="nav-links">
             <a href="orders.html" class="nav-link" style="margin-right: 15px;" title="Order History"><i class="fas fa-box-open"></i></a>
             <a href="cart.html" class="nav-link" style="margin-right: 15px;" title="View Cart"><i class="fas fa-shopping-cart"></i></a>
-            <a href="login.html" class="nav-link">Sign In</a>
-            <a href="register.html" class="btn">Sign Up</a>
+            {% if current_user.is_authenticated %}
+                <span class="nav-link" style="color: var(--primary);">{{ current_user.name }}</span>
+                <a href="/profile" class="nav-link">Profile</a>
+                <a href="/logout" class="nav-link">Logout</a>
+            {% else %}
+                <a href="login.html" class="nav-link">Sign In</a>
+                <a href="register.html" class="btn">Sign Up</a>
+            {% endif %}
         </div>
     </nav>
 
@@ -37,22 +43,21 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <!-- Static Order 1 -->
-                        <tr>
-                            <td style="font-family: monospace; font-size: 0.95rem; color: var(--text-main);"><strong>ORD-AFX930K</strong></td>
-                            <td style="color: var(--text-muted);">Apr 16, 2026</td>
-                            <td><span style="background: rgba(255,255,255,0.05); padding: 5px 10px; border-radius: 20px; font-size: 0.85rem;">3 item(s)</span></td>
-                            <td style="color: var(--primary); font-weight:700;">$89.97</td>
-                            <td><span class="status-badge"><i class="fas fa-check-circle"></i> Executed</span></td>
-                        </tr>
-                        <!-- Static Order 2 -->
-                        <tr>
-                            <td style="font-family: monospace; font-size: 0.95rem; color: var(--text-main);"><strong>ORD-VNZ210L</strong></td>
-                            <td style="color: var(--text-muted);">Apr 15, 2026</td>
-                            <td><span style="background: rgba(255,255,255,0.05); padding: 5px 10px; border-radius: 20px; font-size: 0.85rem;">1 item(s)</span></td>
-                            <td style="color: var(--primary); font-weight:700;">$149.99</td>
-                            <td><span class="status-badge"><i class="fas fa-check-circle"></i> Executed</span></td>
-                        </tr>
+                        {% if orders %}
+                            {% for order in orders %}
+                            <tr>
+                                <td style="font-family: monospace; font-size: 0.95rem; color: var(--text-main);"><strong>ORD-{{ order.id }}</strong></td>
+                                <td style="color: var(--text-muted);">{{ order.date_ordered.strftime('%b %d, %Y') }}</td>
+                                <td><span style="background: rgba(255,255,255,0.05); padding: 5px 10px; border-radius: 20px; font-size: 0.85rem;">{{ order.items|length }} item(s)</span></td>
+                                <td style="color: var(--primary); font-weight:700;">${{ "%.2f"|format(order.total_price) }}</td>
+                                <td><span class="status-badge"><i class="fas fa-check-circle"></i> Executed</span></td>
+                            </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="5" style="text-align: center; color: var(--text-muted); padding: 40px;">No execution logs found. <a href="/" style="color: var(--primary);">Deploy your first asset!</a></td>
+                            </tr>
+                        {% endif %}
                     </tbody>
                 </table>
             </div>

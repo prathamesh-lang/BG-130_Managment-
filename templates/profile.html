@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ForgeCart | Profile</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar" id="navbar">
+        <a href="index.html" class="nav-brand">
+            <i class="fas fa-layer-group"></i> <span>ForgeCart</span>
+        </a>
+        <div class="nav-links">
+            <a href="orders.html" class="nav-link" style="margin-right: 15px;" title="Order History"><i class="fas fa-box-open"></i></a>
+            <a href="cart.html" class="nav-link" style="margin-right: 15px;" title="View Cart"><i class="fas fa-shopping-cart"></i></a>
+            <a href="/profile" class="nav-link" style="color: var(--primary);">Profile</a>
+            <a href="/logout" class="nav-link">Logout</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="page-header">
+            <h1 class="page-title">Developer Profile</h1>
+        </div>
+        
+        <div class="glass auth-container" style="max-width: 600px; margin: 40px auto; padding: 40px;">
+            <div style="text-align: center; margin-bottom: 30px;">
+                <div style="width: 100px; height: 100px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 3rem; color: white;">
+                    <i class="fas fa-user-code"></i>
+                </div>
+                <h2>{{ current_user.name }}</h2>
+                <p style="color: var(--text-muted);">{{ current_user.email }}</p>
+            </div>
+            
+            <div class="form-group">
+                <label>Account ID</label>
+                <input type="text" class="form-control" value="FORGE-USR-{{ current_user.id }}" readonly style="opacity: 0.7;">
+            </div>
+            
+            <div class="form-group">
+                <label>Registration Status</label>
+                <input type="text" class="form-control" value="Verified Developer" readonly style="opacity: 0.7;">
+            </div>
+
+            <div style="margin-top: 30px; display: flex; gap: 15px;">
+                <a href="orders.html" class="btn btn-block" style="text-align: center; text-decoration: none;">
+                    <i class="fas fa-box-open"></i> View My Orders
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <footer class="site-footer">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <i class="fas fa-layer-group"></i> ForgeCart
+                <span>· BackForge 2026</span>
+            </div>
+            <div class="footer-links">
+                <a href="index.html">Store</a>
+                <a href="cart.html">Cart</a>
+                <a href="orders.html">Orders</a>
+                <a href="login.html">Account</a>
+            </div>
+            <div class="footer-copy">
+                Built for the BackForge Hackathon · Designed with precision
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

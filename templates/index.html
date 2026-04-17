@@ -16,8 +16,14 @@
         <div class="nav-links" id="auth-links">
             <a href="orders.html" class="nav-link" style="margin-right: 15px;" title="Order History"><i class="fas fa-box-open"></i></a>
             <a href="cart.html" class="nav-link" style="margin-right: 15px;" title="View Cart"><i class="fas fa-shopping-cart"></i></a>
-            <a href="login.html" class="nav-link">Sign In</a>
-            <a href="register.html" class="btn">Sign Up</a>
+            {% if current_user.is_authenticated %}
+                <span class="nav-link" style="color: var(--primary);">{{ current_user.name }}</span>
+                <a href="/profile" class="nav-link">Profile</a>
+                <a href="/logout" class="nav-link">Logout</a>
+            {% else %}
+                <a href="login.html" class="nav-link">Sign In</a>
+                <a href="register.html" class="btn">Sign Up</a>
+            {% endif %}
         </div>
     </nav>
 
@@ -54,9 +60,14 @@
                 </a>
                 <div class="product-footer">
                     <div class="product-price">$59.99</div>
-                    <button class="btn-add-circle" title="Deploy to Cart">
-                        <i class="fas fa-plus"></i>
-                    </button>
+                    <form action="/add_to_cart" method="POST" style="display:inline;">
+                        <input type="hidden" name="product_name" value="Hackathon Hoodie 2026">
+                        <input type="hidden" name="product_price" value="59.99">
+                        <input type="hidden" name="product_image" value="assets/images/hoodie.png">
+                        <button type="submit" class="btn-add-circle" title="Deploy to Cart">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </form>
                 </div>
             </div>
 
@@ -73,9 +84,14 @@
                 </a>
                 <div class="product-footer">
                     <div class="product-price">$29.99</div>
-                    <button class="btn-add-circle" title="Deploy to Cart">
-                        <i class="fas fa-plus"></i>
-                    </button>
+                    <form action="/add_to_cart" method="POST" style="display:inline;">
+                        <input type="hidden" name="product_name" value="Code Powered T-Shirt">
+                        <input type="hidden" name="product_price" value="29.99">
+                        <input type="hidden" name="product_image" value="assets/images/tshirt.png">
+                        <button type="submit" class="btn-add-circle" title="Deploy to Cart">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </form>
                 </div>
             </div>
 
@@ -92,9 +108,14 @@
                 </a>
                 <div class="product-footer">
                     <div class="product-price">$89.99</div>
-                    <button class="btn-add-circle" title="Deploy to Cart">
-                        <i class="fas fa-plus"></i>
-                    </button>
+                    <form action="/add_to_cart" method="POST" style="display:inline;">
+                        <input type="hidden" name="product_name" value="Premium Dev Backpack">
+                        <input type="hidden" name="product_price" value="89.99">
+                        <input type="hidden" name="product_image" value="assets/images/backpack.png">
+                        <button type="submit" class="btn-add-circle" title="Deploy to Cart">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </form>
                 </div>
             </div>
 
@@ -111,9 +132,14 @@
                 </a>
                 <div class="product-footer">
                     <div class="product-price">$149.99</div>
-                    <button class="btn-add-circle" title="Deploy to Cart">
-                        <i class="fas fa-plus"></i>
-                    </button>
+                    <form action="/add_to_cart" method="POST" style="display:inline;">
+                        <input type="hidden" name="product_name" value="API Access Token (1Yr)">
+                        <input type="hidden" name="product_price" value="149.99">
+                        <input type="hidden" name="product_image" value="assets/images/api_token.png">
+                        <button type="submit" class="btn-add-circle" title="Deploy to Cart">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>

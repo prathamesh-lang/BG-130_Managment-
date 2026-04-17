@@ -15,8 +15,14 @@
         <div class="nav-links">
             <a href="orders.html" class="nav-link" style="margin-right: 15px;" title="Order History"><i class="fas fa-box-open"></i></a>
             <a href="cart.html" class="nav-link" style="margin-right: 15px;" title="View Cart"><i class="fas fa-shopping-cart"></i></a>
-            <a href="login.html" class="nav-link">Sign In</a>
-            <a href="register.html" class="btn">Sign Up</a>
+            {% if current_user.is_authenticated %}
+                <span class="nav-link" style="color: var(--primary);">{{ current_user.name }}</span>
+                <a href="/profile" class="nav-link">Profile</a>
+                <a href="/logout" class="nav-link">Logout</a>
+            {% else %}
+                <a href="login.html" class="nav-link">Sign In</a>
+                <a href="register.html" class="btn">Sign Up</a>
+            {% endif %}
         </div>
     </nav>
 
@@ -26,52 +32,45 @@
         </div>
         <div class="cart-layout">
             <div id="cart-items-list" class="cart-items">
-                <!-- Static Cart Item 1 -->
-                <div class="glass cart-item">
-                    <img src="assets/images/hoodie.png" alt="Hackathon Hoodie 2026" class="cart-item-img">
-                    <div class="cart-item-info">
-                        <div class="cart-item-title">Hackathon Hoodie 2026</div>
-                        <div class="cart-item-price">$59.99</div>
+                {% if cart_items %}
+                    {% for item in cart_items %}
+                    <div class="glass cart-item">
+                        <img src="{{ item.product_image }}" alt="{{ item.product_name }}" class="cart-item-img">
+                        <div class="cart-item-info">
+                            <div class="cart-item-title">{{ item.product_name }}</div>
+                            <div class="cart-item-price">${{ "%.2f"|format(item.product_price) }}</div>
+                        </div>
+                        <div class="cart-qty-ctrl">
+                            <span class="qty-val" style="padding: 0 10px;">Qty: {{ item.quantity }}</span>
+                        </div>
+                        <div class="cart-item-total">${{ "%.2f"|format(item.product_price * item.quantity) }}</div>
+                        <form action="/remove_from_cart/{{ item.id }}" method="POST" style="display:inline; margin-left: auto;">
+                            <button type="submit" class="icon-btn">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </form>
                     </div>
-                    <div class="cart-qty-ctrl">
-                        <button class="qty-btn"><i class="fas fa-minus"></i></button>
-                        <span class="qty-val">1</span>
-                        <button class="qty-btn"><i class="fas fa-plus"></i></button>
-                    </div>
-                    <div class="cart-item-total">$59.99</div>
-                    <button class="icon-btn">
-                        <i class="fas fa-trash"></i>
-                    </button>
-                </div>
-                
-                <!-- Static Cart Item 2 -->
-                <div class="glass cart-item">
-                    <img src="assets/images/stickers.png" alt="Developer Sticker Pack" class="cart-item-img">
-                    <div class="cart-item-info">
-                        <div class="cart-item-title">Developer Sticker Pack</div>
-                        <div class="cart-item-price">$14.99</div>
-                    </div>
-                    <div class="cart-qty-ctrl">
-                        <button class="qty-btn"><i class="fas fa-minus"></i></button>
-                        <span class="qty-val">2</span>
-                        <button class="qty-btn"><i class="fas fa-plus"></i></button>
-                    </div>
-                    <div class="cart-item-total">$29.98</div>
-                    <button class="icon-btn">
-                        <i class="fas fa-trash"></i>
-                    </button>
-                </div>
+                    {% endfor %}
+                {% else %}
+                    <p style="text-align: center; color: var(--text-muted); padding: 40px;">Your active payload is empty. <br><a href="/" style="color: var(--primary);">Deploy some gear!</a></p>
+                {% endif %}
             </div>
             
             <div class="glass cart-summary">
                 <h3 style="margin-bottom: 25px; font-family: 'Outfit', sans-serif;">System Status</h3>
                 <div class="summary-total">
                     <span>Subtotal</span>
-                    <span id="summary-total-amt" style="color: var(--primary);">$89.97</span>
+                    <span id="summary-total-amt" style="color: var(--primary);">${{ "%.2f"|format(subtotal) }}</span>
                 </div>
-                <button class="btn btn-block" style="padding: 16px; font-size: 1.1rem; margin-top: 10px;" id="checkout-btn">
+                {% if cart_items %}
+                <a href="/checkout.html" class="btn btn-block" style="padding: 16px; font-size: 1.1rem; margin-top: 10px; text-align: center; text-decoration: none; box-sizing: border-box; display: inline-block;" id="checkout-btn">
+                    Proceed to Checkout <i class="fas fa-arrow-right" style="margin-left: 5px;"></i>
+                </a>
+                {% else %}
+                <button class="btn btn-block" style="padding: 16px; font-size: 1.1rem; margin-top: 10px; opacity: 0.5; cursor: not-allowed;" disabled>
                     Proceed to Checkout <i class="fas fa-arrow-right" style="margin-left: 5px;"></i>
                 </button>
+                {% endif %}
                 <div style="margin-top:25px; font-size: 0.85rem; color: var(--text-muted); text-align: center; display: flex; align-items: center; justify-content: center; gap: 8px;">
                     <i class="fas fa-shield-alt"></i> Encrypted Transaction via ForgeCart
                 </div>
