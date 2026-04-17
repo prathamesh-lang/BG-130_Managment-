@@ -26,6 +26,24 @@ This project is ideal for:
 
 ---
 
+## ⚙️ Backend Workflow
+
+### Authentication Flow
+1. **Sign Up:** User enters name, email, and password. Password is hashed using `bcrypt` and stored in the `user` table.
+2. **Login:** User credentials are verified against the database. If successful, `Flask-Login` creates a secure session.
+3. **Session Management:** Users remain logged in across pages until they explicitly log out.
+
+### Order & Checkout Workflow
+1. **Cart Management:** Users can add products to their cart from the dashboard. The system checks if the item exists and increments quantity or creates a new entry in the `cart_item` table.
+2. **Checkout:** The `/checkout.html` route ensures the user is logged in and has items in their cart. It calculates the subtotal dynamically.
+3. **Execution (Order Placement):** Upon "Authorizing & Compiling Order," the backend:
+    * Generates a new record in the `order` table.
+    * Transfers cart items to the `order_item` table for permanent record-keeping.
+    * Flushes the `cart_item` table for that specific user.
+4. **Execution Logs (Orders):** The `/orders.html` page queries the database for all orders associated with the logged-in user, displaying them in reverse chronological order.
+
+---
+
 ## 🏗️ System Architecture
 
 ForgeCart follows a **Flask multi-page architecture** with MySQL backend:
